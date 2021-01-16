@@ -3,7 +3,7 @@
 ===
 Jan 2021
     Run this script inside the root folder, where all the `messages.html` files are.
-    It has a whole lot of room for improvements, you're very welcome to contribute/fork etc.
+    This works but it's far from perfect so you're very welcome to contribute/fork etc.
 
 """
 import os
@@ -16,7 +16,12 @@ import matplotlib.ticker as mtick
 import seaborn as sns
 import re
 
-PLOT_DATE_FORMAT = "%b %d, %Y" # Check [Here](https://strftime.org/) if you prefer a different one.
+################# set these according to your flavor #################
+NUM_BINS = 900
+PLOT_DATE_FORMAT = "%b %d, %Y"
+  # Check [Here](https://strftime.org/) if you prefer a different one.
+######################################################################
+
 
 class MsgFileName:
     """ Only required for getting the number out of
@@ -110,7 +115,6 @@ for file in messages_files:
 timestamps = [ msg.getEpochDate() for msg in msgs ]
 
 
-NUM_BINS = 900
 plt.title(f"# messages from {msgs[0].getReadableDate()} to {msgs[-1].getReadableDate()}:\n{len(msgs)}")
 # plt.hist(timestamps, bins=NUM_BINS); 
 sns.histplot(data=timestamps, bins=NUM_BINS, kde=True)
