@@ -14,7 +14,6 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdate
 import matplotlib.ticker as mtick
 import seaborn as sns
-import re
 
 ################# set these according to your flavor #################
 NUM_BINS = 900
@@ -48,17 +47,15 @@ class MsgFileName:
     >>> messages_files = sorted(messages_files, key=lambda x : x.getNumber(), reverse=False)
     """
     
-    MESSAGES_REGEX_PATTERN = r'(messages)(|\d+)(.html)'
-
     def __init__(self, filename):
         self.filename = filename
         self.number = self._extractNumber()
 
     def _extractNumber(self):
-        if self.filename == "messages.html": return 1
-        m = re.search(self.MESSAGES_REGEX_PATTERN, self.filename)
-        if m: return int(m.group(2))
-
+        if self.filename == "messages.html": 
+            return 1
+        return int(self.filename.strip("messages").strip(".html"))
+        
     def getFilename(self):
         return self.filename
 
@@ -101,8 +98,6 @@ for file in messages_files:
         content = f.read()
 
         soup = bs4.BeautifulSoup(content, 'lxml')
-
-        texts = soup.find_all('div', {'class':'body'})
 
         for group in soup.find_all('div', {'class':'body'}):
             try:
